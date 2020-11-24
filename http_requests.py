@@ -21,6 +21,7 @@ def send_answers(http_payload, dest_addr):
     http_headers_w10_post = {
         'Host': f'{dest_addr}',
         'Connection': 'keep-alive',
+        'Content-Length': len(http_payload),
         'Accept': 'application/json, text/plain, */*',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/79.0.3945.74 Safari/537.36 Edg/79.0.309.43',

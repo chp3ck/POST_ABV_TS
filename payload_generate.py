@@ -10,7 +10,8 @@ def payload_merge(discipline, group, lesson, replies, student, started, finished
     return payload
 
 
-def generate_old_defined_payload():
+def generate_test_payload(discipline=None, group=None, lesson=None, replies=None, student=None, started=None,
+                          finished=None, iat=None):
     discipline = "СТЭКС"
     group = "ИУ4-44"
     lesson = "СТЭКС_2"
@@ -29,5 +30,8 @@ def generate_old_defined_payload():
     finished = "2020-11-20T15:15:29.042Z"
     iat = 1605874529
 
-    old_defined_payload = payload_merge(discipline, group, lesson, replies, student, started, finished, iat)
-    return old_defined_payload
+    return payload_merge(discipline, group, lesson, replies, student, started, finished, iat)
+
+
+def generate_payload(questions):
+    pass
