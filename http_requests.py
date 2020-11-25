@@ -1,8 +1,12 @@
 import urllib3
 import json
 
+from termcolor import colored
 
-def get_questions(lesson_name, dest_addr):
+from config import ADDR, CONFIG
+
+
+def get_questions(lesson_name, dest_addr=ADDR) -> list:
     http_headers_w10_get = {
         'Host': f'{dest_addr}',
         'Connection': 'keep-alive',
@@ -13,11 +17,11 @@ def get_questions(lesson_name, dest_addr):
         'Accept-Encoding': 'gzip, deflate',
         'Accept-Language': 'en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7'
     }
-    http_request(http_fields={'lessonName': lesson_name}, http_headers=http_headers_w10_get,
-                 url=f'http://{dest_addr}', path='/questions/get')
+    return http_request(http_fields={'lessonName': lesson_name}, http_headers=http_headers_w10_get,
+                        url=f'http://{dest_addr}', path='/questions/get')
 
 
-def send_answers(http_payload, dest_addr):
+def send_answers(http_payload, dest_addr=ADDR) -> dict:
     http_headers_w10_post = {
         'Host': f'{dest_addr}',
         'Connection': 'keep-alive',
@@ -31,24 +35,23 @@ def send_answers(http_payload, dest_addr):
         'Accept-Encoding': 'gzip, deflate',
         'Accept-Language': 'en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7'
     }
-    http_request(http_method='POST', http_payload=http_payload, http_headers=http_headers_w10_post,
-                 url=f'http://{dest_addr}', path='/answers/post')
+    return http_request(http_method='POST', http_payload=http_payload, http_headers=http_headers_w10_post,
+                        url=f'http://{dest_addr}', path='/answers/post')
 
 
-def http_request(http_method='GET', http_fields=None, http_payload=None, http_headers=None, url=None, path=''):
+def http_request(http_method='GET', http_fields=None, http_payload=None, http_headers=None, url=None, path='',
+                 debug=True):
     if [_ for _ in (http_headers, url) if _ is None]:
-        print(f'PLS DEFINE:\n   http_headers: {http_headers}\n   url: {url}\n')
-        return
+        print(colored(f'PLS DEFINE:\n   http_headers: {http_headers}\n   url: {url}\n', 'red'))
     http = urllib3.PoolManager()
-
-    print('------------------------------------------------------------------------------------')
-    print(f'Trying connect: {url}')
-    print(f'    Path: {path}')
-    print(f'    Method: {http_method}')
-    print(f'    Fields: {http_fields}')
-    print(f'    Payload: {http_payload}')
-    print(f'    Headers: {http_headers}')
-    print('------------------------------------------------------------------------------------\n')
+    if debug:
+        print('------------------------------------------------------------------------------------')
+        print(colored(f'Trying connect: {url}', 'green'))
+        print(f'    Path: {path}')
+        print(f'    Method: {http_method}')
+        print(f'    Fields: {http_fields}')
+        print(f'    Payload: {http_payload}')
+        print(f'    Headers: {http_headers}')
 
     try:
         r = http.request(
@@ -60,20 +63,17 @@ def http_request(http_method='GET', http_fields=None, http_payload=None, http_he
             timeout=urllib3.Timeout(connect=1.0, read=1.0),
             retries=3
         )
-        print('------------------------------------------------------------------------------------\n')
-        if r.status == '200':
-            print('SUCCESSFULLY REQUEST...')
-        else:
-            print('FAILED REQUEST...')
-        print(f'    REQUEST INFO:\n     status: {r.status}\n        data: {r.data}\n        headers: {r.headers}\n')
-        print('BEAUTIFIED REQUEST INFO:')
-        print(f'    {json.loads(r.data.decode("utf-8"))}\n')
-        print(f'    {json.loads(r.data.decode("utf-8"))["json"]}')
-        print('------------------------------------------------------------------------------------\n')
-        return r.status
+        if debug:
+            print(colored(f'\n    Response received: ', 'green'), colored(f'{r.data}', 'white'))
+            print('------------------------------------------------------------------------------------')
+        if r.status == 200:
+            return json.loads(r.data.decode('utf-8'))
     except urllib3.exceptions.ConnectTimeoutError:
-        print('Connection failed!!! Timeout error, check link or server availability...')
-        return 502
+        print(colored('    Connection failed!!! Timeout error, check link or server availability...', 'red'))
+        print('------------------------------------------------------------------------------------')
     except urllib3.exceptions.MaxRetryError:
-        print('Connection retries failed!!! Check link or server availability...')
-        return 502
+        print(colored('    Connection retries failed!!! Check link or server availability...', 'red'))
+        print('------------------------------------------------------------------------------------')
+    except urllib3.exceptions.LocationValueError:
+        print(colored(f'    Connection failed!!! Check ADDR: {ADDR} specified in {CONFIG}...', 'red'))
+        print('------------------------------------------------------------------------------------')

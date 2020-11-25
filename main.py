@@ -1,19 +1,14 @@
-import json
-from http_requests import get_questions, send_answers
-from payload_generate import generate_test_payload
-from jwt_generate import generate_jwt
-
-ADDR = '95.31.21.148:7777'
-LESSON = 'СТЭКС_2'
+from termcolor import colored
+from config import COURSE, LESSON, INTERCEPTED_HTTP_PAYLOAD, SECRET, BRUTEFORCE_TIMES
+from jwt_generate import check_secret
+from bf_answers import bf_answers_n_times
 
 
 def main():
-    questions = get_questions(LESSON, ADDR)
-    # payload = generate_payload(questions)
-    payload = generate_test_payload()
-    jwt = generate_jwt(payload)
-    http_payload = json.dumps({"crypted": jwt}).replace(" ", "").encode('utf-8')
-    send_answers(http_payload=http_payload, dest_addr=ADDR)
+    if check_secret(INTERCEPTED_HTTP_PAYLOAD, SECRET):
+        bf_answers_n_times(BRUTEFORCE_TIMES, COURSE, LESSON)
+    else:
+        print(colored(f'WARNING, WRONG SECRET!!!\n   SECRET: {SECRET}', 'red'))
 
 
 if __name__ == "__main__":
