@@ -18,10 +18,10 @@ def get_questions(lesson_name, dest_addr=ADDR) -> list:
         'Accept-Language': 'en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7'
     }
     return http_request(http_fields={'lessonName': lesson_name}, http_headers=http_headers_w10_get,
-                        url=f'http://{dest_addr}', path='/questions/get')
+                        url=f'http://{dest_addr}', path='/questions/get', debug=False, debug_response=False)
 
 
-def send_answers(http_payload, dest_addr=ADDR) -> dict:
+def send_answers(http_payload, dest_addr=ADDR):
     http_headers_w10_post = {
         'Host': f'{dest_addr}',
         'Connection': 'keep-alive',
@@ -36,11 +36,11 @@ def send_answers(http_payload, dest_addr=ADDR) -> dict:
         'Accept-Language': 'en-US,en;q=0.9,ru-RU;q=0.8,ru;q=0.7'
     }
     return http_request(http_method='POST', http_payload=http_payload, http_headers=http_headers_w10_post,
-                        url=f'http://{dest_addr}', path='/answers/post')
+                        url=f'http://{dest_addr}', path='/answers/post', debug=False)
 
 
 def http_request(http_method='GET', http_fields=None, http_payload=None, http_headers=None, url=None, path='',
-                 debug=True):
+                 debug=True, debug_response=True):
     if [_ for _ in (http_headers, url) if _ is None]:
         print(colored(f'PLS DEFINE:\n   http_headers: {http_headers}\n   url: {url}\n', 'red'))
     http = urllib3.PoolManager()
@@ -60,10 +60,10 @@ def http_request(http_method='GET', http_fields=None, http_payload=None, http_he
             fields=http_fields,
             body=http_payload,
             headers=http_headers,
-            timeout=urllib3.Timeout(connect=1.0, read=1.0),
+            timeout=urllib3.Timeout(connect=10.0, read=10.0),
             retries=3
         )
-        if debug:
+        if debug_response:
             print(colored(f'\n    Response received: ', 'green'), colored(f'{r.data}', 'white'))
             print('------------------------------------------------------------------------------------')
         if r.status == 200:

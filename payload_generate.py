@@ -5,6 +5,7 @@ from typing import Tuple
 
 import pytz as pytz
 
+from config import LOGS_QUESTIONS
 from jwt_generate import generate_jwt
 from student_names import STUDENT_NAMES
 
@@ -24,6 +25,7 @@ def payload_merge(discipline: str, group: str, lesson: str, replies: list, stude
 
 def generate_replies(questions: list, answers: list) -> list:
     question_numbers = [questions[_]['number'] for _ in range(len(questions))]
+    question_numbers = LOGS_QUESTIONS
     return [{"questionNumber": question_numbers[_], "answer": answers[_]} for _ in range(len(question_numbers))]
 
 
@@ -55,5 +57,19 @@ def generate_payload(discipline: str, group: str, lesson: str, questions: list, 
 def generate_http_payload(discipline: str, group: str, lesson: str, questions: list, answers: list,
                           secret: str) -> bytes:
     payload = generate_payload(discipline, group, lesson, questions, answers)
+    jwt = generate_jwt(payload, secret)
+    return json.dumps({"crypted": jwt}).replace(" ", "").encode('utf-8')
+
+
+def generate_payload_logs(discipline: str, group: str, lesson: str, questions: list, answers: list,
+                          student: str) -> dict:
+    replies = generate_replies(questions, answers)
+    started, finished, iat = generate_ts()
+    return payload_merge(discipline, group, lesson, replies, student, started, finished, iat)
+
+
+def generate_http_payload_logs(discipline: str, group: str, lesson: str, questions: list, answers: list,
+                               secret: str, student: str) -> bytes:
+    payload = generate_payload_logs(discipline, group, lesson, questions, answers, student)
     jwt = generate_jwt(payload, secret)
     return json.dumps({"crypted": jwt}).replace(" ", "").encode('utf-8')
