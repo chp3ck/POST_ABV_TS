@@ -1,5 +1,5 @@
 ADDR = ''
-BRUTEFORCE_TIMES = 10
+BRUTEFORCE_TIMES = 1
 
 COURSE = "СТЭКС"
 LESSON = "СТЭКС_2"
@@ -19,17 +19,16 @@ ANSWERS = [{"questionNumber": 1, "answer": 1},
 
 SECRET = ''
 INTERCEPTED_HTTP_PAYLOAD = '{"crypted":' \
-                           '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9' \
-                           '.eyJkaXNjaXBsaW5lIjoi0KHQotCt0JrQoSIsImdyb3VwIjoi0JjQozQtNDQiLCJsZXNzb25OYW1lIjo' \
-                           'i0KHQotCt0JrQoV8yIiwicmVwbGllcyI6W3sicXVlc3Rpb25OdW1iZXIiOjMxLCJhbnN3ZXIiOjN9LHs' \
-                           'icXVlc3Rpb25OdW1iZXIiOjEsImFuc3dlciI6Mn0seyJxdWVzdGlvbk51bWJlciI6MjEsImFuc3dlciI' \
-                           '6Mn0seyJxdWVzdGlvbk51bWJlciI6MzQsImFuc3dlciI6MX0seyJxdWVzdGlvbk51bWJlciI6NDMsImF' \
-                           'uc3dlciI6NH0seyJxdWVzdGlvbk51bWJlciI6NDgsImFuc3dlciI6M30seyJxdWVzdGlvbk51bWJlciI' \
-                           '6NTUsImFuc3dlciI6M30seyJxdWVzdGlvbk51bWJlciI6NywiYW5zd2VyIjozfSx7InF1ZXN0aW9uTnV' \
-                           'tYmVyIjo1MywiYW5zd2VyIjoxfSx7InF1ZXN0aW9uTnVtYmVyIjo0MCwiYW5zd2VyIjo0fV0sInN0dWR' \
-                           'lbnROYW1lIjoiNSIsInN0YXJ0ZWQiOiIyMDIwLTExLTIwVDE0OjU5OjA3LjI5NloiLCJmaW5pc2hlZCI' \
-                           '6IjIwMjAtMTEtMjBUMTU6MTU6MjkuMDQyWiIsImlhdCI6MTYwNTg3NDUyOX0' \
-                           '.Z6YvxglOQKfHyD_VBo51OSSZfqIaUqg13jnoD-1gc6s"}'
+                           '"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.' \
+                           'eyJkaXNjaXBsaW5lIjoi0KHQotCt0JrQoSIsImdyb3VwIjoi0JjQozQtMDAiLCJsZXNzb25OYW1lIjoi0KHQotCt0J' \
+                           'rQoV8yIiwicmVwbGllcyI6W3sicXVlc3Rpb25OdW1iZXIiOjI2LCJhbnN3ZXIiOjF9LHsicXVlc3Rpb25OdW1iZXIi' \
+                           'OjEsImFuc3dlciI6NH0seyJxdWVzdGlvbk51bWJlciI6MTYsImFuc3dlciI6M30seyJxdWVzdGlvbk51bWJlciI6NT' \
+                           'gsImFuc3dlciI6NH0seyJxdWVzdGlvbk51bWJlciI6NDIsImFuc3dlciI6Mn0seyJxdWVzdGlvbk51bWJlciI6Nywi' \
+                           'YW5zd2VyIjozfSx7InF1ZXN0aW9uTnVtYmVyIjoyOCwiYW5zd2VyIjozfSx7InF1ZXN0aW9uTnVtYmVyIjoyMSwiYW' \
+                           '5zd2VyIjoyfSx7InF1ZXN0aW9uTnVtYmVyIjoxMiwiYW5zd2VyIjozfSx7InF1ZXN0aW9uTnVtYmVyIjoxMywiYW5z' \
+                           'd2VyIjoyfV0sInN0dWRlbnROYW1lIjoiMTIzIiwic3RhcnRlZCI6IjIwMjAtMTItMTNUMTc6MjM6MTUuNjI1WiIsIm' \
+                           'ZpbmlzaGVkIjoiMjAyMC0xMi0xM1QxNzoyNDozOS44OTlaIiwiaWF0IjoxNjA3ODY5NDc5fQ.zyuhsEFFoP4hA3XdR' \
+                           '8XMdpnAPjasnWcRv3rpvHW8Wdo"}'
 
 BF_FILE_PATH = 'bf_files/bf_info.csv'
 CONFIG = 'config.py'

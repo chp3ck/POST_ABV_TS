@@ -18,7 +18,7 @@ def get_answers(discipline: str, lesson: str, questions: list, group: str = GROU
     response = send_answers(http_payload, ADDR)
     # check response status
 
-    if response['status'] is True:
+    if response['status'] is True and 'result' in response:
         # initialize number of correct answers
         result = response['result']
         if result == 10:
@@ -58,7 +58,10 @@ def get_answers(discipline: str, lesson: str, questions: list, group: str = GROU
             print(colored(f'WARNING, UNEXPECTED RESPONSE RESULT: {response["result"]}!!!', 'red'))
             return
     else:
-        print(colored(f'WARNING, WRONG HTTP ANSWERS RESPONSE STATUS: {response["status"]}!!!', 'red'))
+        is_result = 'result' in response
+        print(colored(f'WARNING, WRONG HTTP ANSWERS RESPONSE:'
+                      f' status -> {response["status"]},'
+                      f' result -> {is_result}!!!', 'red'))
         return
 
 

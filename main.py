@@ -6,6 +6,7 @@ from bf_answers import bf_answers_n_times
 
 def main():
     if check_secret(INTERCEPTED_HTTP_PAYLOAD, SECRET):
+        print(colored(f'SECRET VERIFY SUCCESSFULLY !!!\n   SECRET: {SECRET}', 'green'))
         bf_answers_n_times(BRUTEFORCE_TIMES, COURSE, LESSON)
     else:
         print(colored(f'WARNING, WRONG SECRET!!!\n   SECRET: {SECRET}', 'red'))
